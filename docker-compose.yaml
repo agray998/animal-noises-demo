@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  front-end:
+    image: agray998/animal-noise-front:latest
+    build: ./front-end
+    ports:
+      - published: 80
+        target: 5000
+        protocol: tcp
+    networks:
+      - "animal-net"
+  animal-api:
+    image: agray998/animal-noise-animal:latest
+    build: ./animal-api
+    networks:
+      - "animal-net"
+  noise-api:
+    image: agray998/animal-noise-noise:latest
+    build: ./noise-api
+    networks:
+      - "animal-net"
+networks:
+  animal-net:
