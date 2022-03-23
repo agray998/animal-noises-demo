@@ -4,6 +4,9 @@
     </head>
     <body style="background-color: lightblue; font-family: Calibri;">
         <h1>Animal Noises Generator</h1>
-        {{ animal_noise }}
+        {% for result in results %}
+        {{ result.__str__() }}
+        <br>
+        {% endfor %}
     </body>
 </html>

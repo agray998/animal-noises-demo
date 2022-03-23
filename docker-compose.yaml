@@ -1,5 +1,17 @@
 version: "3.8"
 services:
+  mysql:
+    image: agray998/animal-noise-db:latest
+    build: ./db
+    volumes:
+      - type: volume
+        source: animal-vol
+        target: /var/lib/mysql
+    networks:
+      - "animal-net"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: animal_db
   front-end:
     image: agray998/animal-noise-front:latest
     build: ./front-end
@@ -9,6 +21,10 @@ services:
         protocol: tcp
     networks:
       - "animal-net"
+    depends_on:
+      - "mysql"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
   animal-api:
     image: agray998/animal-noise-animal:latest
     build: ./animal-api
@@ -21,3 +37,5 @@ services:
       - "animal-net"
 networks:
   animal-net:
+volumes:
+  animal-vol:
