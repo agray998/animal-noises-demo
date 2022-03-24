@@ -1,4 +1,6 @@
 */.coverage
-*/__pycache__/*
+*/.pytest_cache
+__pycache__/
 *.db
 */htmlcov/
+venv/
