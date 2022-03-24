@@ -15,14 +15,12 @@ services:
   front-end:
     image: agray998/animal-noise-front:latest
     build: ./front-end
-    ports:
-      - published: 80
-        target: 5000
-        protocol: tcp
     networks:
       - "animal-net"
     depends_on:
       - "mysql"
+      - "animal-api"
+      - "noise-api"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
   animal-api:
@@ -35,7 +33,21 @@ services:
     build: ./noise-api
     networks:
       - "animal-net"
-networks:
-  animal-net:
+  nginx:
+    image: nginx:latest
+    ports:
+      - published: 80
+        target: 80
+        protocol: tcp
+    volumes:
+      - type: bind
+        source: ./nginx.conf
+        target: /etc/nginx/nginx.conf
+    networks:
+      - "animal-net"
+    depends_on:
+      - "front-end"
 volumes:
   animal-vol:
+networks:
+  animal-net:
